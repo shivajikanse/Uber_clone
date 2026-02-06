@@ -66,7 +66,9 @@ export const logoutUser = async (req, res, next) => {
   try {
     // Invalidate the token by adding it to the blacklist
     const token = req.headers.authorization?.split(" ")[1] || req.cookies.token;
-    await BlackListToken.create({ token });
+    if (token) {
+      await BlackListToken.create({ token });
+    }
     res.clearCookie("token");
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {

@@ -27,7 +27,7 @@ export const authuser = async (req, res, next) => {
 
 // ==============Captain Authentication Middleware=====================
 export const captainAuth = async (req, res, next) => {
-  const authHeader = req.headers.authorization || "";
+  const authHeader = req.headers.authorization;
   const token =
     req.cookies?.token ||
     (authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : null);

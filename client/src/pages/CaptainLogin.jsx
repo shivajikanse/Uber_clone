@@ -1,14 +1,47 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import UserLogin from "./UserLogin";
+import { CaptainDataContext } from "../context/CaptainContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function CaptainLogin() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [CaptainData, setCaptainData] = React.useState({});
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { captain, setCaptain } = React.useContext(CaptainDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    try {
+      const CaptainData = {
+        email,
+        password,
+      };
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/captains/login`,
+        CaptainData,
+      );
+
+      if (response.status === 200) {
+        const data = response.data;
+        console.log("Captain logged in successfully:", data);
+        // save user in context
+        setCaptain(data);
+
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+        navigate("/Home");
+      }
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error.message);
+      // shows backend message if available
+      alert(error.response?.data?.message || "Invalid email or password");
+    }
+
     setCaptainData({ email: email, password: password });
     setEmail("");
     setPassword("");

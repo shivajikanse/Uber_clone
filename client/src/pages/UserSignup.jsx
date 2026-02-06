@@ -1,6 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CaptainLogin from "./CaptainLogin";
+import axios from "axios";
+import { UserDataContext } from "../context/UserContext.jsx";
 
 function UserSignup() {
   const [firstName, setFirstName] = React.useState("");
@@ -9,21 +11,50 @@ function UserSignup() {
   const [password, setPassword] = React.useState("");
   const [userData, setUserData] = React.useState({});
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    setUserData({
-      fullName: {
-        firstName: firstName,
-        lastName: lastName,
-      },
-      email: email,
-      password: password,
-    });
+  const navigate = useNavigate();
 
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
+  // userContext
+  const { user, setUser } = React.useContext(UserDataContext);
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const newUser = {
+        fullName: {
+          firstName: firstName,
+          lastName: lastName,
+        },
+        email: email,
+        password: password,
+      };
+      // console.log("Submitting user data:", newUser);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/users/register`,
+        newUser,
+      );
+
+      console.log("Server response:", response);
+
+      if (response.status === 201) {
+        const data = response.data;
+        console.log("User registered successfully:", data);
+        setUser(data);
+        navigate("/Home");
+      }
+
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.log("FULL ERROR ", error.response?.data);
+
+      if (error.response?.data?.errors) {
+        error.response.data.errors.forEach((err) =>
+          console.error(`${err.param}: ${err.msg}`),
+        );
+      }
+    }
   };
 
   return (
@@ -37,7 +68,7 @@ function UserSignup() {
           />
 
           <form
-            onSubmit={() => {
+            onSubmit={(e) => {
               onSubmitHandler(e);
             }}
           >

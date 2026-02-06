@@ -39,6 +39,6 @@ router.post(
 
 router.get("/profile", authuser, getUserProfile);
 
-router.get("/logout", authuser, logoutUser);
+router.get("/logout", logoutUser);
 
 export default router;

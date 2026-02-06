@@ -1,18 +1,47 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { use } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import CaptainLogin from "./CaptainLogin";
 import UserSignup from "./UserSignup";
+import { UserDataContext } from "../context/UserContext";
+import axios from "axios";
 
 function UserLogin() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [userData, setUserData] = React.useState({});
+  // const [userData, setUserData] = React.useState({});
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  const { user, setUser } = React.useContext(UserDataContext);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setUserData({ email: email, password: password });
-    // console.log("User data", userData);
 
+    const userData = {
+      email,
+      password,
+    };
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/users/login`,
+        userData,
+      );
+      if (response.status === 200) {
+        const data = response.data;
+        console.log("User logged in successfully:", data);
+        // save user in context
+        setUser(data);
+
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+        navigate("/Home");
+      }
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error.message);
+      // shows backend message if available
+      alert(error.response?.data?.message || "Invalid email or password");
+    }
     setEmail("");
     setPassword("");
   };
