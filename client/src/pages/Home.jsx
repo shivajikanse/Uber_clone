@@ -2,13 +2,29 @@ import React, { useState, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import "remixicon/fonts/remixicon.css";
+import LocationSearchPanel from "../components/LocationSearchPanel";
+import VehiclePanel from "../components/VehiclePanel";
+import ConfirmRide from "../components/ConfirmRide";
+import LookingForDriver from "../components/LookingForDriver";
+import WaitingForDriver from "../components/WaitingForDriver";
 
 function Home() {
+  //useState
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [panelOpen, setPanelOpen] = useState("");
+  const [vehiclepanel, Setvehiclepanel] = useState(false);
+  const [confirRidePanel, SetConfirmRidePanel] = useState(false);
+  const [VehicleFound, setVehicleFound] = useState(false);
+  const [waitingForDriver, setWaitingForDriver] = useState(false);
+
+  //use Ref
   const panelRef = useRef(null);
-  const panelCloseRef = useRef();
+  const panelCloseRef = useRef(null);
+  const vehiclePanelRef = useRef(null);
+  const ConfirmRidePanelRef = useRef(null);
+  const VehicleFoundPanelRef = useRef(null);
+  const waitingForDriverRef = useRef(null);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -33,6 +49,66 @@ function Home() {
       }
     },
     [panelOpen],
+  );
+
+  useGSAP(
+    function () {
+      if (vehiclepanel) {
+        gsap.to(vehiclePanelRef.current, {
+          transform: "translateY(0%)",
+        });
+      } else {
+        gsap.to(vehiclePanelRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [vehiclepanel],
+  );
+
+  useGSAP(
+    function () {
+      if (confirRidePanel) {
+        gsap.to(ConfirmRidePanelRef.current, {
+          transform: "translateY(0%)",
+        });
+      } else {
+        gsap.to(ConfirmRidePanelRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [confirRidePanel],
+  );
+
+  useGSAP(
+    function () {
+      if (waitingForDriver) {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(0%)",
+        });
+      } else {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [waitingForDriver],
+  );
+
+  useGSAP(
+    function () {
+      if (VehicleFound) {
+        gsap.to(VehicleFoundPanelRef.current, {
+          transform: "translateY(0%)",
+        });
+      } else {
+        gsap.to(VehicleFoundPanelRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [VehicleFound],
   );
 
   return (
@@ -88,61 +164,57 @@ function Home() {
               placeholder="Enter your destination"
             />
           </form>
-          <button className="bg-black text-white px-4 py-2 rounded-lg mt-3 w-full">
+
+          {/* <button className="bg-black text-white px-4 py-2 rounded-lg mt-3 w-full">
             Find Trip
-          </button>
+          </button> */}
         </div>
-        <div ref={panelRef} className="bg-white h-0">
-          {/* <LocationSearchPanel
-            suggestions={
-              activeField === "pickup"
-                ? pickupSuggestions
-                : destinationSuggestions
-            }
+
+        <div ref={panelRef} className="bg-white h-0 ">
+          <LocationSearchPanel
+            panelOpen={panelOpen}
             setPanelOpen={setPanelOpen}
-            setVehiclePanel={setVehiclePanel}
-            setPickup={setPickup}
-            setDestination={setDestination}
-            activeField={activeField}
-          /> */}
+            vehiclepanel={vehiclepanel}
+            Setvehiclepanel={Setvehiclepanel}
+          />
         </div>
       </div>
-      <div className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12">
-        {/* <VehiclePanel
-          selectVehicle={setVehicleType}
-          fare={fare}
-          setConfirmRidePanel={setConfirmRidePanel}
-          setVehiclePanel={setVehiclePanel}
-        /> */}
+      <div
+        ref={vehiclePanelRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
+      >
+        <VehiclePanel
+          SetConfirmRidePanel={SetConfirmRidePanel}
+          Setvehiclepanel={Setvehiclepanel}
+        />
       </div>
-      <div className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
-        {/* <ConfirmRide
-          createRide={createRide}
-          pickup={pickup}
-          destination={destination}
-          fare={fare}
-          vehicleType={vehicleType}
-          setConfirmRidePanel={setConfirmRidePanel}
+
+      <div
+        ref={ConfirmRidePanelRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+      >
+        <ConfirmRide
+          SetConfirmRidePanel={SetConfirmRidePanel}
+          confirRidePanel={confirRidePanel}
           setVehicleFound={setVehicleFound}
-        /> */}
+        />
       </div>
-      <div className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12">
-        {/* <LookingForDriver
-          createRide={createRide}
-          pickup={pickup}
-          destination={destination}
-          fare={fare}
-          vehicleType={vehicleType}
-          setVehicleFound={setVehicleFound}
-        /> */}
+      <div
+        ref={VehicleFoundPanelRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+      >
+        <LookingForDriver setVehicleFound={setVehicleFound} />
       </div>
-      <div className="fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12">
-        {/* <WaitingForDriver
-          ride={ride}
+      <div
+        ref={waitingForDriverRef}
+        className="fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12"
+      >
+        <WaitingForDriver
+          // ride={ride}
           setVehicleFound={setVehicleFound}
           setWaitingForDriver={setWaitingForDriver}
           waitingForDriver={waitingForDriver}
-        /> */}
+        />
       </div>
     </div>
   );
