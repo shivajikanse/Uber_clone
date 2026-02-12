@@ -117,6 +117,10 @@ export const getSuggestion = async (input) => {
 
 //Captain in radius
 export const getCaptainsInTheRadius = async (lat, lng, radius) => {
+  console.log("Searching captains near:");
+  console.log("Latitude:", lat);
+  console.log("Longitude:", lng);
+  console.log("Radius:", radius);
   const captains = await Captain.find({
     location: {
       $geoWithin: {

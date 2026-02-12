@@ -5,9 +5,23 @@ import BlackListToken from "../models/blackListToken.js";
 import CaptainModel from "../models/captain.model.js";
 
 export const authuser = async (req, res, next) => {
-  const token = req.cookies.token || req.header("Authorization").split(" ")[1];
+  let token;
+
+  // 1. Check cookie
+  if (req.cookies?.token) {
+    token = req.cookies.token;
+  }
+
+  // 2. Check Authorization header
+  else if (req.headers.authorization?.startsWith("Bearer ")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+
+  // 3. If still no token
   if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
+    return res.status(401).json({
+      message: "No token, authorization denied",
+    });
   }
 
   // Check if token is blacklisted
@@ -18,7 +32,13 @@ export const authuser = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await usermodel.findById(decoded._id).select("-password");
+    const user = await usermodel.findById(decoded._id).select("-password");
+    if (!user) {
+      return res.status(403).json({
+        message: "Token does not belong to a user",
+      });
+    }
+    req.user = user;
     next();
   } catch (err) {
     res.status(401).json({ message: "Token is not valid" });

@@ -1,16 +1,39 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ConfirmRidePopUp = (props) => {
   const [Otp, setOtp] = useState("");
+  const navigate = useNavigate();
+
   const submitHander = async (e) => {
     e.preventDefault();
+
+    const response = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/api/ride/start-ride`,
+      {
+        params: {
+          rideId: props.ride._id,
+          otp: Otp,
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("captain-token")}`,
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      props.setConfirmRidePopupPanel(false);
+      props.setRidePopupPanel(false);
+      navigate("/captain-riding", { state: { ride: props.ride } });
+    }
   };
   return (
     <div>
       <h5
         className="p-1 text-center w-[93%] absolute top-0"
         onClick={() => {
-          props.setConfirmRidePopupPanel(false); // ✅ correct
+          props.setConfirmRidePopupPanel(false);
           props.setRidePopupPanel(true);
         }}
       >

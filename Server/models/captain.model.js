@@ -24,10 +24,10 @@ const captainSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
-  sockeId: {
+  socketId: {
     type: String,
-    default: null,
   },
+
   status: {
     type: String,
     enum: ["active", "inactive", "suspended"],
@@ -56,14 +56,21 @@ const captainSchema = new mongoose.Schema({
   },
 
   location: {
-    lat: {
-      type: Number,
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
     },
-    lng: {
-      type: Number,
+    coordinates: {
+      // [lng, lat]
+      type: [Number],
+      default: [0, 0],
     },
   },
 });
+
+// ensure a 2dsphere index for GeoJSON Point queries
+captainSchema.index({ location: "2dsphere" });
 
 //Generate Auth Token
 captainSchema.methods.generateAuthToken = function () {

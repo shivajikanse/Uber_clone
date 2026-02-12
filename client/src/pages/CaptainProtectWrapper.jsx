@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const CaptainProtectWrapper = ({ children }) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("captain-token");
   const navigate = useNavigate();
   const { captain, setCaptain } = useContext(CaptainDataContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +27,7 @@ const CaptainProtectWrapper = ({ children }) => {
         }
       })
       .catch((err) => {
-        localStorage.removeItem("token");
+        localStorage.removeItem("captain-token");
         navigate("/captainLogin");
       });
   }, [token]);

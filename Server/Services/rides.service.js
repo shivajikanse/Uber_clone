@@ -6,7 +6,7 @@ import crypto from "crypto";
 import { getAddressCoordinate } from "../Services/maps.service.js";
 
 //Get fare function
-async function getFare(pickup, destination) {
+async function getFareService(pickup, destination) {
   if (!pickup || !destination) {
     throw new Error("Pickup and destination are required");
   }
@@ -65,7 +65,7 @@ async function getFare(pickup, destination) {
   return fare;
 }
 
-export default getFare;
+export default getFareService;
 
 //Generate otp
 function getOtp(num) {
@@ -89,7 +89,7 @@ export const createRide = async ({
     throw new Error("All fields are required");
   }
 
-  const fare = await getFare(pickup, destination);
+  const fare = await getFareService(pickup, destination);
 
   const ride = rideModel.create({
     user,
@@ -134,7 +134,7 @@ export const ConfirmRide = async ({ rideId, captain }) => {
 };
 
 //Start ride
-export const startRide = async ({ rideId, otp, captain }) => {
+export const startRideService = async ({ rideId, otp, captain }) => {
   if (!rideId || !otp) {
     throw new Error("Ride id and OTP are required");
   }
@@ -172,7 +172,7 @@ export const startRide = async ({ rideId, otp, captain }) => {
 };
 
 //End Ride
-export const endRide = async ({ rideId, captain }) => {
+export const endRideService = async ({ rideId, captain }) => {
   if (!rideId) {
     throw new Error("Ride id is required");
   }

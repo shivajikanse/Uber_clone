@@ -13,6 +13,7 @@ import CaptainProtectWrapper from "./pages/CaptainProtectWrapper.jsx";
 import CaptainHome from "./pages/CaptainHome.jsx";
 import Riding from "./pages/Riding.jsx";
 import CaptainRiding from "./pages/CaptainRiding.jsx";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 function App() {
   return (

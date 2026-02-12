@@ -8,7 +8,7 @@ const UserLogout = () => {
   useEffect(() => {
     const logout = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("user-token");
 
         await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/users/logout`,
@@ -21,7 +21,7 @@ const UserLogout = () => {
           },
         );
 
-        localStorage.removeItem("token");
+        localStorage.removeItem("user-token");
         navigate("/UserLogin");
       } catch (error) {
         console.error("Logout error:", error);

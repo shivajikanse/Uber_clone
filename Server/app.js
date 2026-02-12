@@ -7,6 +7,8 @@ import connectDb from "./lib/db.config.js";
 import UserRoutes from "./routes/user.route.js";
 import cookieParser from "cookie-parser";
 import CaptainRoutes from "./routes/captain.route.js";
+import mapRoutes from "./routes/maps.route.js";
+import rideRoutes from "./routes/rides.route.js";
 
 //Configuring dotenv
 dotenv.config();
@@ -26,6 +28,8 @@ app.get("/", (req, res) => {
 });
 app.use("/api/users", UserRoutes);
 app.use("/api/captains", CaptainRoutes);
+app.use("/api/maps", mapRoutes);
+app.use("/api/ride", rideRoutes);
 
 //Server listening
 const StartServer = async () => {
@@ -43,3 +47,5 @@ const StartServer = async () => {
 
 //Invoke
 StartServer();
+
+export default app;

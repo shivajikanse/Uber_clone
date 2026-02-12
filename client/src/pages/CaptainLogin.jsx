@@ -32,7 +32,9 @@ function CaptainLogin() {
         setCaptain(data);
 
         if (data.token) {
-          localStorage.setItem("token", data.token);
+          localStorage.setItem("captain-token", data.token);
+          // clear any user token to avoid role mix-up
+          localStorage.removeItem("user-token");
         }
         navigate("/captain-home");
       }

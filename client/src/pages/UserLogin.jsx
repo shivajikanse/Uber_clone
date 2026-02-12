@@ -33,7 +33,9 @@ function UserLogin() {
         setUser(data);
 
         if (data.token) {
-          localStorage.setItem("token", data.token);
+          localStorage.setItem("user-token", data.token);
+          // ensure captain token is not leaking when user logs in
+          localStorage.removeItem("captain-token");
         }
         navigate("/Home");
       }

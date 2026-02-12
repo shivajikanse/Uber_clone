@@ -11,6 +11,7 @@ import axios from "axios";
 import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import LiveTracking from "../components/LiveTracking";
 
 function Home() {
   //useState
@@ -43,13 +44,19 @@ function Home() {
   const { user } = useContext(UserDataContext);
 
   useEffect(() => {
-    if (!user || !socket) return;
+    // 🔑 CHANGE: Ensure user._id exists before proceeding
+    if (!user || !user._id || !socket) {
+      console.log("Socket join deferred: User ID not yet available.");
+      return;
+    }
 
     // register user socket on server
-    console.log("joining socket as user:", user?._id);
-    socket.emit("join", { userType: "user", userId: user._id });
+    console.log("joining socket as user:", user._id);
+    socket.emit("join", {
+      userType: "user",
+      userId: user._id,
+    });
 
-    // handle ride confirmed by captain
     const onRideConfirmed = (ride) => {
       console.log("ride-confirmed received (user):", ride._id);
       setVehicleFound(false);
@@ -57,9 +64,7 @@ function Home() {
       setRide(ride);
     };
 
-    // handle ride started by captain
     const onRideStarted = (ride) => {
-      console.log("ride-started received (user):", ride._id);
       setWaitingForDriver(false);
       navigate("/riding", { state: { ride } });
     };
@@ -67,12 +72,11 @@ function Home() {
     socket.on("ride-confirmed", onRideConfirmed);
     socket.on("ride-started", onRideStarted);
 
-    // cleanup to avoid duplicate listeners
     return () => {
       socket.off("ride-confirmed", onRideConfirmed);
       socket.off("ride-started", onRideStarted);
     };
-  }, [socket, user, navigate]);
+  }, [socket, user]); // This will now re-run correctly once user._id is set
 
   const handlePickupChange = async (e) => {
     const value = e.target.value;
@@ -88,7 +92,7 @@ function Home() {
         {
           params: { input: e.target.value },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
           },
         },
       );
@@ -106,7 +110,7 @@ function Home() {
         {
           params: { input: e.target.value },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
           },
         },
       );
@@ -210,7 +214,7 @@ function Home() {
       {
         params: { pickup, destination },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("user-token")}`,
         },
       },
     );
@@ -228,7 +232,7 @@ function Home() {
       },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("user-token")}`,
         },
       },
     );
@@ -243,7 +247,7 @@ function Home() {
       />
       <div className="h-screen w-screen">
         {/* image for temporary use  */}
-        {/* <LiveTracking /> */}
+        <LiveTracking />
       </div>
       <div className=" flex flex-col justify-end h-screen absolute top-0 w-full">
         <div className="h-[30%] p-6 bg-white relative">
