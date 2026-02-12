@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-// import { CaptainDataContext } from "../context/CapatainContext";
+import { CaptainDataContext } from "../context/CaptainContext.jsx";
 
 const CaptainDetails = () => {
-  // const { captain } = useContext(CaptainDataContext)
+  const { captain } = useContext(CaptainDataContext);
 
   return (
     <div>
@@ -14,7 +14,7 @@ const CaptainDetails = () => {
             alt=""
           />
           <h4 className="text-lg font-medium capitalize">
-            {/* {captain.fullname.firstname + " " + captain.fullname.lastname} */}
+            {captain.fullName.firstName + " " + captain.fullName.lastName}
           </h4>
         </div>
         <div>

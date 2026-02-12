@@ -3,20 +3,13 @@ import React, { use } from "react";
 export const UserDataContext = React.createContext();
 
 const UserContext = ({ children }) => {
-  const [user, setUser] = React.useState({
-    email: "",
-    fullName: {
-      firstName: "",
-      lastName: "",
-    },
-  });
+  // start with `null` until the user is loaded/authenticated
+  const [user, setUser] = React.useState(null);
 
   return (
-    <div>
-      <UserDataContext.Provider value={{ user, setUser }}>
-        {children}
-      </UserDataContext.Provider>
-    </div>
+    <UserDataContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserDataContext.Provider>
   );
 };
 

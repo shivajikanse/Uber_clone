@@ -34,7 +34,7 @@ function CaptainLogin() {
         if (data.token) {
           localStorage.setItem("token", data.token);
         }
-        navigate("/Home");
+        navigate("/captain-home");
       }
     } catch (error) {
       console.error("Login failed:", error.response?.data || error.message);

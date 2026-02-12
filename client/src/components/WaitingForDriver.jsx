@@ -5,7 +5,7 @@ const WaitingForDriver = (props) => {
     <div>
       <h5
         onClick={() => {
-          props.waitingForDriver(false);
+          props.setWaitingForDriver(false);
         }}
         className="p-1 text-center w-[93%] absolute top-0"
       >
@@ -20,10 +20,10 @@ const WaitingForDriver = (props) => {
         />
         <div className="text-right">
           <h2 className="text-lg font-medium capitalize">
-            {/* {props.ride?.captain.fullname.firstname} */}
+            {props.ride?.captain.fullName.firstName}
           </h2>
           <h4 className="text-xl font-semibold -mt-1 -mb-1">
-            {/* {props.ride?.captain.vehicle.plate} */}
+            {props.ride?.captain.vehicle.plate}
           </h4>
           <p className="text-sm text-gray-600">Maruti Suzuki Alto</p>
           <h1 className="text-lg font-semibold"> {props.ride?.otp} </h1>
@@ -37,7 +37,7 @@ const WaitingForDriver = (props) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.pickup} */}
+                {props.ride?.pickup}
               </p>
             </div>
           </div>
@@ -46,16 +46,14 @@ const WaitingForDriver = (props) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.destination} */}
+                {props.ride?.destination}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-5 p-3">
             <i className="ri-currency-line"></i>
             <div>
-              <h3 className="text-lg font-medium">
-                ₹{/* {props.ride?.fare} */}{" "}
-              </h3>
+              <h3 className="text-lg font-medium">₹{props.ride?.fare} </h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
           </div>

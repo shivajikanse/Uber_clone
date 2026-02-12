@@ -1,6 +1,10 @@
 import React from "react";
 
 const RidePopUp = (props) => {
+  const riderName = props.ride?.user?.fullName
+    ? `${props.ride.user.fullName.firstName} ${props.ride.user.fullName.lastName}`
+    : "Rider";
+
   return (
     <div>
       <h5
@@ -20,11 +24,7 @@ const RidePopUp = (props) => {
             src="https://i.pinimg.com/236x/af/26/28/af26280b0ca305be47df0b799ed1b12b.jpg"
             alt=""
           />
-          <h2 className="text-lg font-medium">
-            {/* {props.ride?.user.fullname.firstname +
-              " " +
-              props.ride?.user.fullname.lastname} */}
-          </h2>
+          <h2 className="text-lg font-medium">{riderName}</h2>
         </div>
         <h5 className="text-lg font-semibold">2.2 KM</h5>
       </div>
@@ -35,7 +35,7 @@ const RidePopUp = (props) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.pickup} */}
+                {props.ride?.pickup}
               </p>
             </div>
           </div>
@@ -44,7 +44,7 @@ const RidePopUp = (props) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.destination} */}
+                {props.ride?.destination}
               </p>
             </div>
           </div>
@@ -60,7 +60,7 @@ const RidePopUp = (props) => {
           <button
             onClick={() => {
               props.setConfirmRidePopupPanel(true);
-              //   props.confirmRide();
+              props.confirmRide();
             }}
             className=" bg-green-600 w-full text-white font-semibold p-2 px-10 rounded-lg"
           >

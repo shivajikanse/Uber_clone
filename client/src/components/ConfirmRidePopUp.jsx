@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ConfirmRidePopUp = (props) => {
+  const [Otp, setOtp] = useState("");
+  const submitHander = async (e) => {
+    e.preventDefault();
+  };
   return (
     <div>
       <h5
         className="p-1 text-center w-[93%] absolute top-0"
         onClick={() => {
           props.setConfirmRidePopupPanel(false); // ✅ correct
-          //   props.setRidePopupPanel(true);
+          props.setRidePopupPanel(true);
         }}
       >
         <i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
@@ -23,7 +27,7 @@ const ConfirmRidePopUp = (props) => {
             alt=""
           />
           <h2 className="text-lg font-medium capitalize">
-            {/* {props.ride?.user.fullname.firstname} */}
+            {props.ride?.user.fullName.firstName}
           </h2>
         </div>
         <h5 className="text-lg font-semibold">2.2 KM</h5>
@@ -35,7 +39,7 @@ const ConfirmRidePopUp = (props) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.pickup} */}
+                {props.ride?.pickup}
               </p>
             </div>
           </div>
@@ -44,7 +48,7 @@ const ConfirmRidePopUp = (props) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.destination} */}
+                {props.ride?.destination}
               </p>
             </div>
           </div>
@@ -58,10 +62,10 @@ const ConfirmRidePopUp = (props) => {
         </div>
 
         <div className="mt-6 w-full">
-          <form>
+          <form onSubmit={submitHander}>
             <input
-              //   value={otp}
-              //   onChange={(e) => setOtp(e.target.value)}
+              value={Otp}
+              onChange={(e) => setOtp(e.target.value)}
               type="text"
               className="bg-[#eee] px-6 py-4 font-mono text-lg rounded-lg w-full mt-3"
               placeholder="Enter OTP"

@@ -38,7 +38,7 @@ const ConfirmRide = (props) => {
             <i className="ri-currency-line"></i>
             <div>
               <h3 className="text-lg font-medium">
-                {/* ₹{props.fare[props.vehicleType]} */}
+                ₹{props.fare[props.vehicleType]}
               </h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
@@ -48,7 +48,7 @@ const ConfirmRide = (props) => {
           onClick={() => {
             props.setVehicleFound(true);
             props.SetConfirmRidePanel(false);
-            // props.createRide();
+            props.createRide();
           }}
           className="w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg"
         >
